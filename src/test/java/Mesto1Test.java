@@ -38,6 +38,15 @@ public class Mesto1Test {
         likePhotoById(photoId);
         deleteLikePhotoById(photoId);
     }
+    @Test
+    @DisplayName("Check user name")
+    @Description("This test is for check current user's name.")
+    public void checkUserName() {
+        given()
+                .auth().oauth2(bearerToken) // Передаём токен для аутентификации
+                .get("/api/users/me") // Делаем GET-запрос
+                .then().assertThat().body("data.name", equalTo("IncorrectName")); // Проверяем, что имя соответствует ожидаемому
+    }
 
     @Step("Take the first photo from the list")
     private String getTheFirstPhotoId() {
@@ -65,5 +74,6 @@ public class Mesto1Test {
                 .delete("/api/cards/{photoId}/likes", photoId) // Делаем DELETE-запрос
                 .then().assertThat().statusCode(200); // Проверяем, что сервер вернул код 200
     }
+
 
 }
